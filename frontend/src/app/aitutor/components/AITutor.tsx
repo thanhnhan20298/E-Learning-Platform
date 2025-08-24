@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Send, MessageSquare, Mic, Volume2 } from "lucide-react";
-import { apiRequest, API_ENDPOINTS } from "../config/api";
+import { apiRequest, API_ENDPOINTS } from "@/config/api";
 
 interface Message {
   id: number;

@@ -30,6 +30,7 @@ app.use("/api/auth", require("./routes/auth"));
 app.use("/api/ai", require("./routes/ai"));
 app.use("/api/lessons", require("./routes/lessons"));
 app.use("/api/listening", require("./routes/listening"));
+app.use("/api/speaking", require("./routes/speaking"));
 app.use("/api/tests", require("./routes/tests"));
 app.use("/api/users", require("./routes/users"));
 

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Navigation from "@/components/Navigation";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,10 +45,11 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} antialiased`}>
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-          {/* Mobile-first responsive container */}
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Navigation />
+          <Breadcrumbs />
+          <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {children}
-          </div>
+          </main>
         </div>
       </body>
     </html>

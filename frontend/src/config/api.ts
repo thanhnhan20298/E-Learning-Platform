@@ -30,6 +30,12 @@ export const API_ENDPOINTS = {
   LISTENING: "/listening",
   LISTENING_GENERATE: "/listening/generate",
 
+  // Speaking Practice
+  SPEAKING: "/speaking",
+  SPEAKING_ANALYZE: "/speaking/analyze",
+  SPEAKING_GENERATE: "/speaking/generate",
+  SPEAKING_TTS: "/speaking/tts",
+
   // AI Tutor
   AI_CHAT: "/ai/chat",
 
