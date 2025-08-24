@@ -1,0 +1,53 @@
+# AWS App Runner Configuration for Backend
+
+## Bước 1: Deploy Backend với AWS App Runner
+
+1. **Tạo apprunner.yaml trong backend:**
+
+```yaml
+version: 1.0
+runtime: nodejs18
+build:
+  commands:
+    build:
+      - npm install
+      - npm run build
+run:
+  runtime-version: 18.x
+  command: npm start
+  network:
+    port: 5000
+    env: PORT
+  env:
+    - name: NODE_ENV
+      value: production
+    - name: GEMINI_API_KEY
+      value: ${GEMINI_API_KEY}
+```
+
+2. **Deploy Backend:**
+   - Vào AWS Console > App Runner
+   - Create service > Source: GitHub
+   - Chọn repository "E-Learning-Platform"
+   - Source directory: "backend"
+   - App Runner sẽ tự động detect apprunner.yaml
+
+3. **Cập nhật Frontend:**
+   - Lấy URL từ App Runner (ví dụ: https://abc123.us-east-1.awsapprunner.com)
+   - Cập nhật Environment Variable trong Amplify:
+     ```
+     NEXT_PUBLIC_API_URL=https://your-apprunner-url.awsapprunner.com/api
+     ```
+
+## Phương án 2: Full AWS (Production Ready)
+
+- **Frontend:** AWS Amplify 
+- **Backend:** AWS Lambda + API Gateway (serverless)
+- **Database:** AWS RDS hoặc DynamoDB
+- **Storage:** AWS S3
+
+## Phương án 3: Simple VPS (Cost Effective)
+
+- **Server:** DigitalOcean/Linode VPS ($5/month)
+- **Setup:** Docker Compose
+- **Domain:** Cloudflare DNS
