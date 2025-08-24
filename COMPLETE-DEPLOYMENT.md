@@ -1,6 +1,58 @@
-# Complete Deployment Guide - All Options
+# Complete Deployment Guide - All Options (Including FREE!)
 
 ## 🎯 **Tổng quan:** Để web hoạt động hoàn chỉnh cần deploy cả Frontend + Backend
+
+---
+
+## 🆓 **PHƯƠNG ÁN 0: HOÀN TOÀN MIỄN PHÍ (RECOMMENDED CHO HỌC TẬP)**
+
+### ✅ **Ưu điểm:**
+- 100% FREE! 
+- Không cần thẻ tín dụng
+- Phù hợp development và demo
+- Dễ setup
+
+### 🔧 **Cách deploy:**
+
+#### **Frontend: Vercel (FREE)**
+1. Vào [Vercel.com](https://vercel.com)
+2. **Import Git Repository** → Chọn GitHub
+3. **Root Directory:** `frontend`
+4. **Framework:** Next.js (auto-detect)
+5. **Environment Variables:**
+   ```
+   NEXT_PUBLIC_API_URL=https://your-backend-url.railway.app/api
+   NODE_ENV=production
+   ```
+6. **Deploy** → Lấy URL (ví dụ: `https://e-learning.vercel.app`)
+
+#### **Backend: Railway (FREE $5 credit/tháng)**
+1. Vào [Railway.app](https://railway.app)
+2. **New Project** → **Deploy from GitHub**
+3. **Repository:** E-Learning-Platform
+4. **Root Directory:** `backend`
+5. **Environment Variables:**
+   ```
+   GEMINI_API_KEY=your_real_api_key
+   NODE_ENV=production
+   PORT=5000
+   ```
+6. **Deploy** → Lấy URL (ví dụ: `https://backend.railway.app`)
+
+#### **🎉 Hoàn thành FREE!** 
+- **Frontend:** `https://e-learning.vercel.app` (FREE forever)
+- **Backend:** `https://backend.railway.app` (FREE $5/tháng)
+- **Chi phí:** $0 🎉
+
+### 📋 **FREE Hosting Alternatives:**
+
+| Service | Frontend | Backend | Giới hạn | Link |
+|---------|----------|---------|----------|------|
+| **Vercel** | ✅ FREE | ❌ | 100GB bandwidth | [vercel.com](https://vercel.com) |
+| **Netlify** | ✅ FREE | ❌ | 100GB bandwidth | [netlify.com](https://netlify.com) |
+| **Railway** | ✅ FREE | ✅ FREE | $5 credit/tháng | [railway.app](https://railway.app) |
+| **Render** | ✅ FREE | ✅ FREE | 512MB RAM | [render.com](https://render.com) |
+| **Cyclic** | ❌ | ✅ FREE | Serverless | [cyclic.sh](https://cyclic.sh) |
 
 ---
 
