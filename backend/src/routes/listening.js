@@ -9,67 +9,18 @@ if (process.env.GEMINI_API_KEY) {
   gemini = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 }
 
-// Sample listening exercises data
-const sampleExercises = [
-  {
-    id: 1,
-    title: "Daily Conversation - At the Coffee Shop",
-    level: "Beginner",
-    audioUrl: "/audio/coffee-shop.mp3",
-    transcript:
-      "Customer: Good morning! I'd like a large coffee, please.\nBarista: Would you like that black or with milk?\nCustomer: With milk, please. And could I have a muffin too?\nBarista: Sure! That'll be $6.50.",
-    questions: [
-      {
-        id: 1,
-        question: "What does the customer order?",
-        options: [
-          "A small coffee",
-          "A large coffee and muffin",
-          "Just a muffin",
-          "Tea and cake",
-        ],
-        correctAnswer: 1,
-      },
-      {
-        id: 2,
-        question: "How much does the order cost?",
-        options: ["$5.50", "$6.50", "$7.50", "$8.50"],
-        correctAnswer: 1,
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: "Weather Forecast",
-    level: "Intermediate",
-    audioUrl: "/audio/weather.mp3",
-    transcript:
-      "Good evening, I'm Sarah Johnson with your weather update. Tomorrow will be partly cloudy with a high of 25 degrees Celsius. There's a 30% chance of rain in the afternoon, so you might want to bring an umbrella. The weekend looks much brighter with sunny skies and temperatures reaching 28 degrees.",
-    questions: [
-      {
-        id: 1,
-        question: "What will the weather be like tomorrow?",
-        options: ["Sunny", "Partly cloudy", "Rainy", "Stormy"],
-        correctAnswer: 1,
-      },
-      {
-        id: 2,
-        question: "What's the weekend weather forecast?",
-        options: ["Rainy", "Cloudy", "Sunny", "Snowy"],
-        correctAnswer: 2,
-      },
-    ],
-  },
-];
+// In-memory storage for generated exercises (should be replaced with database)
+let generatedExercises = [];
 
 // Get all listening exercises
 router.get("/", (req, res) => {
   try {
     const { level } = req.query;
 
-    let exercises = sampleExercises;
+    // Only use generated exercises
+    let exercises = generatedExercises;
     if (level) {
-      exercises = sampleExercises.filter(
+      exercises = generatedExercises.filter(
         (ex) => ex.level.toLowerCase() === level.toLowerCase()
       );
     }
@@ -91,7 +42,8 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
   try {
     const exerciseId = parseInt(req.params.id);
-    const exercise = sampleExercises.find((ex) => ex.id === exerciseId);
+    // Look in generated exercises only
+    const exercise = generatedExercises.find((ex) => ex.id === exerciseId);
 
     if (!exercise) {
       return res.status(404).json({
@@ -119,7 +71,8 @@ router.post("/:id/submit", (req, res) => {
     const exerciseId = parseInt(req.params.id);
     const { answers } = req.body;
 
-    const exercise = sampleExercises.find((ex) => ex.id === exerciseId);
+    // Look in generated exercises only
+    const exercise = generatedExercises.find((ex) => ex.id === exerciseId);
     if (!exercise) {
       return res.status(404).json({
         success: false,
@@ -244,30 +197,38 @@ Make sure the content is appropriate for ${level} level and engaging.`;
       exerciseData.audioUrl = null; // Would need TTS integration
       exerciseData.generated = true;
 
+      // Save to generated exercises array
+      generatedExercises.push(exerciseData);
+
       res.json({
         success: true,
         data: exerciseData,
       });
     } else {
       // Fallback when AI is not available
+      const fallbackExercise = {
+        id: Date.now(),
+        title: `${topic} - ${level} Exercise`,
+        level,
+        transcript: `This is a sample exercise about ${topic}. The content would be generated using AI when the API key is configured.`,
+        questions: [
+          {
+            id: 1,
+            question: `What is the main topic of this exercise?`,
+            options: [topic, "General conversation", "Weather", "Shopping"],
+            correctAnswer: 0,
+          },
+        ],
+        generated: true,
+        audioUrl: null,
+      };
+
+      // Save to generated exercises array
+      generatedExercises.push(fallbackExercise);
+
       res.json({
         success: true,
-        data: {
-          id: Date.now(),
-          title: `${topic} - ${level} Exercise`,
-          level,
-          transcript: `This is a sample exercise about ${topic}. The content would be generated using AI when the API key is configured.`,
-          questions: [
-            {
-              id: 1,
-              question: `What is the main topic of this exercise?`,
-              options: [topic, "General conversation", "Weather", "Shopping"],
-              correctAnswer: 0,
-            },
-          ],
-          generated: true,
-          audioUrl: null,
-        },
+        data: fallbackExercise,
       });
     }
   } catch (error) {

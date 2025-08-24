@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Play, Pause, RotateCcw, Loader, Plus } from "lucide-react";
+import { apiRequest, API_ENDPOINTS } from "../config/api";
 
 interface ListeningExercise {
   id: number;
@@ -16,6 +17,12 @@ interface ListeningExercise {
     correctAnswer: number;
   }>;
   generated?: boolean;
+}
+
+interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+  message?: string;
 }
 
 export default function ListeningPractice() {
@@ -37,8 +44,9 @@ export default function ListeningPractice() {
   const loadExercises = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/listening");
-      const data = await response.json();
+      const data = await apiRequest<ApiResponse<ListeningExercise[]>>(
+        API_ENDPOINTS.LISTENING
+      );
       if (data.success) {
         setExercises(data.data);
         console.log("✅ Loaded exercises:", data.data.length);
@@ -84,11 +92,10 @@ export default function ListeningPractice() {
 
     setIsGenerating(true);
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/listening/generate",
+      const data = await apiRequest<ApiResponse<ListeningExercise>>(
+        API_ENDPOINTS.LISTENING_GENERATE,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             topic: newExerciseTopic,
             level: "Intermediate",
@@ -96,8 +103,6 @@ export default function ListeningPractice() {
           }),
         }
       );
-
-      const data = await response.json();
 
       if (data.success) {
         setExercises((prev) => [...prev, data.data]);
@@ -152,8 +157,8 @@ export default function ListeningPractice() {
 
   if (!currentEx) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-4xl mx-auto px-4 text-center">
+      <div className="min-h-screen bg-gray-50 py-4 md:py-8">
+        <div className="max-w-4xl mx-auto px-3 md:px-4 text-center">
           <h1 className="text-3xl font-bold mb-8">🎧 Listening Practice</h1>
           <p className="text-gray-600 mb-8">
             No exercises available. Create a new one!
@@ -196,8 +201,8 @@ export default function ListeningPractice() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4">
+    <div className="min-h-screen bg-gray-50 py-4 md:py-8">
+      <div className="max-w-4xl mx-auto px-3 md:px-4">
         <h1 className="text-3xl font-bold text-center mb-8">
           🎧 Listening Practice
         </h1>

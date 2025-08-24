@@ -2,6 +2,23 @@
 
 import { useState } from "react";
 import { Send, MessageSquare, Mic, Volume2 } from "lucide-react";
+import { apiRequest, API_ENDPOINTS } from "../config/api";
+
+interface Message {
+  id: number;
+  type: "user" | "ai";
+  content: string;
+  timestamp?: Date;
+}
+
+interface AIResponse {
+  success: boolean;
+  data?: {
+    response: string;
+  };
+  response?: string;
+  message?: string;
+}
 
 export default function AITutor() {
   const [messages, setMessages] = useState([
@@ -33,15 +50,11 @@ export default function AITutor() {
     try {
       // Gọi API backend
       console.log("🚀 Calling API:", currentMessage);
-      const response = await fetch("http://localhost:5000/api/ai/chat", {
+      const data = await apiRequest<AIResponse>(API_ENDPOINTS.AI_CHAT, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({ message: currentMessage }),
       });
 
-      const data = await response.json();
       console.log("✅ API Response:", data);
 
       const aiResponse = {
