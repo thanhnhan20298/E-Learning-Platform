@@ -1,10 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "export",
+  trailingSlash: true,
+  distDir: "out",
   images: {
+    unoptimized: true,
     domains: ["localhost"],
   },
   env: {
-    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    NEXT_PUBLIC_API_URL:
+      process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
   },
 };
 

@@ -1,31 +1,50 @@
 # AWS Deployment Guide
 
-## Phương án 1: AWS Amplify (Recommended cho beginners)
+# AWS Deployment Guide
 
-### Bước 1: Chuẩn bị project cho deployment
+## Phương án 1: AWS Amplify (Frontend) + AWS Lambda/EC2 (Backend)
 
-1. **Tạo file build script cho toàn bộ project:**
+### ⚠️ **Quan trọng**: AWS Amplify chỉ host frontend static files. Backend cần deploy riêng!
 
+### Bước 1: Deploy Frontend với AWS Amplify
+
+1. **Chuẩn bị Frontend:**
+   - Frontend đã được cấu hình để export static files
+   - File `amplify.yml` đã được tối ưu
+
+2. **Deploy trên AWS Amplify:**
+   - Đăng nhập [AWS Console](https://console.aws.amazon.com/)
+   - Tìm service **"AWS Amplify"**
+   - Click **"New app"** > **"Host web app"**
+   - Chọn **GitHub** và authorize
+   - Chọn repository **"E-Learning-Platform"**
+   - Chọn branch **"main"**
+   - AWS sẽ tự động sử dụng file `amplify.yml`
+
+3. **Environment Variables cho Frontend:**
+   ```
+   NEXT_PUBLIC_API_URL=https://your-backend-url/api
+   NODE_ENV=production
+   ```
+
+### Bước 2: Deploy Backend (Chọn 1 trong 3)
+
+#### Option A: AWS Lambda + API Gateway (Serverless)
 ```bash
-# amplify.yml sẽ được tạo tự động, nhưng chúng ta cần chuẩn bị structure
+# Cần cấu hình serverless framework
+npm install -g serverless
 ```
 
-### Bước 2: Deploy với AWS Amplify
-
-1. Đăng nhập [AWS Console](https://console.aws.amazon.com/)
-2. Tìm service **"AWS Amplify"**
-3. Click **"New app"** > **"Host web app"**
-4. Chọn **GitHub** và authorize
-5. Chọn repository **"E-Learning-Platform"**
-6. Chọn branch **"main"**
-7. AWS sẽ tự động detect và config build settings
-
-### Bước 3: Environment Variables
-Trong Amplify console, thêm Environment variables:
+#### Option B: AWS EC2 (Recommended)
+```bash
+# Sử dụng script có sẵn
+./infra/deploy-ec2.sh
 ```
-GEMINI_API_KEY=your_api_key_here
-NODE_ENV=production
-```
+
+#### Option C: AWS App Runner
+- Đơn giản nhất cho backend
+- Auto-scaling
+- Connect trực tiếp với GitHub
 
 ---
 
