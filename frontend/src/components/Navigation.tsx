@@ -67,7 +67,6 @@ export default function Navigation() {
           <nav className="hidden md:flex space-x-8">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
-              console.log(`${item.href}: ${isActive} (pathname: ${pathname})`);
               return (
                 <Link
                   key={item.href}

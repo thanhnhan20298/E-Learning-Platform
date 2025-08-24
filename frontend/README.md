@@ -33,16 +33,31 @@ src/
 ├── app/                    # Next.js App Router
 │   ├── globals.css        # Global styles
 │   ├── layout.tsx         # Root layout
-│   └── page.tsx           # Home page
-├── components/            # React components
+│   ├── page.tsx           # Home page
+│   ├── aitutor/           # AI Tutor page
+│   │   └── components/    # Page-specific components
+│   ├── grammar/           # Grammar lessons page
+│   │   └── components/    # Page-specific components
+│   ├── listening/         # Listening practice page
+│   │   └── components/    # Page-specific components
+│   ├── speaking/          # Speaking practice page
+│   │   └── components/    # Page-specific components
+│   └── test-prep/         # Test preparation page
+│       └── components/    # Page-specific components
+├── components/            # Shared/Common components
 │   ├── ui/               # Reusable UI components
-│   ├── AITutor.tsx       # AI chat interface
-│   ├── ListeningPractice.tsx
-│   ├── GrammarLessons.tsx
-│   └── TestPreparation.tsx
-├── lib/                   # Utility functions
-├── types/                 # TypeScript definitions
-└── data/                  # Static data
+│   ├── Navigation.tsx    # Global navigation
+│   ├── Breadcrumbs.tsx   # Breadcrumb navigation
+│   └── HomePageContent.tsx # Home page content
+├── hooks/                 # Custom React hooks
+│   ├── useListeningExercises.ts
+│   └── useSpeakingPractice.ts
+├── services/             # API service layer
+│   ├── api/             # API calls
+│   └── business/        # Business logic
+├── lib/                  # Utility functions
+├── types/                # TypeScript definitions
+└── config/               # Configuration files
 ```
 
 ## 🎨 Styling
